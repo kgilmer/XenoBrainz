@@ -2,8 +2,6 @@ package pl.qus.xenoamp.musicbrainz;
 
 import java.util.Vector;
 
-import pl.qus.xenoamp.helper.Logger;
-
 public class TesterMB {
 
 	public static void test() {
@@ -18,7 +16,7 @@ public class TesterMB {
 
 				MBEzRelease moja=new MBEzRelease(wybrana);
 				
-				Logger.d("dwed"+moja);
+				System.out.println("dwed"+moja);
 			}
 		};
 

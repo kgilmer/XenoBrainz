@@ -3,8 +3,6 @@ package pl.qus.xenoamp.musicbrainz;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
-import android.text.format.DateFormat;
-
 public class MBEzRecording {
 	private String id;
 	private String title;
