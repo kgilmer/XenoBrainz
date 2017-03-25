@@ -3,8 +3,9 @@ package pl.qus.xenoamp.musicbrainz;
 import org.jdom2.Document;
 import org.jdom2.Element;
 import org.jdom2.JDOMException;
-import org.jdom2.Namespace;
 import org.jdom2.input.SAXBuilder;
+import pl.qus.xenoamp.musicbrainz.model.MBRecording;
+import pl.qus.xenoamp.musicbrainz.model.MBRelease;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -14,9 +15,7 @@ import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.List;
 
-public class MBParser {
-
-    public static Namespace MBNamespace;
+public class MusicBrainzClient {
 
     private static InputStream getStream(String url) throws IOException {
         URL obj = new URL(url);
@@ -36,7 +35,7 @@ public class MBParser {
                     + URLEncoder.encode("\"" + name + "\"", "UTF-8") + "";
 
             InputStream is = getStream(query);
-            Element whole = MBParser.inputStreamToElement(is);
+            Element whole = MusicBrainzClient.inputStreamToElement(is);
             Element reclist = whole.getChild("release-list",
                     whole.getNamespace());
 
@@ -60,7 +59,7 @@ public class MBParser {
                 + name;
 
         InputStream is = getStream(query);
-        Element whole = MBParser.inputStreamToElement(is);
+        Element whole = MusicBrainzClient.inputStreamToElement(is);
         Element reclist = whole.getChild("release-list",
                 whole.getNamespace());
 
@@ -78,7 +77,7 @@ public class MBParser {
         String query = "http://www.musicbrainz.org/ws/2/recording?query=" + URLEncoder.encode("\"" + name + "\"", "UTF-8");
 
         InputStream is = getStream(query);
-        Element whole = MBParser.inputStreamToElement(is);
+        Element whole = MusicBrainzClient.inputStreamToElement(is);
         Element reclist = whole.getChild("recording-list",
                 whole.getNamespace());
 
@@ -95,7 +94,7 @@ public class MBParser {
         String query = "http://www.musicbrainz.org/ws/2/release/" + id
                 + "?inc=media+tags+artist-credits+labels+recordings";
         InputStream is = getStream(query);
-        Element whole = MBParser.inputStreamToElement(is);
+        Element whole = MusicBrainzClient.inputStreamToElement(is);
         Element release = whole.getChild("release", whole.getNamespace());
         return new MBRelease(release);
     }
@@ -104,7 +103,7 @@ public class MBParser {
         String query = "http://musicbrainz.org/ws/2/recording/" + id
                 + "?inc=tags+artist-credits";
         InputStream is = getStream(query);
-        Element whole = MBParser.inputStreamToElement(is);
+        Element whole = MusicBrainzClient.inputStreamToElement(is);
         Element recording = whole.getChild("recording", whole.getNamespace());
         return new MBRecording(recording);
     }
@@ -116,7 +115,7 @@ public class MBParser {
         String query = "http://musicbrainz.org//ws/2/release?recording=" + id;
 
         InputStream is = getStream(query);
-        Element whole = MBParser.inputStreamToElement(is);
+        Element whole = MusicBrainzClient.inputStreamToElement(is);
         Element reclist = whole.getChild("release-list",
                 whole.getNamespace());
 
@@ -140,9 +139,7 @@ public class MBParser {
 
         try {
             doc = builder.build(is);
-            Element el = doc.getRootElement();
-            MBNamespace = el.getNamespace();
-            return el;
+            return doc.getRootElement();
         } catch (JDOMException e) {
             throw new IOException("Parse failure.", e);
         }

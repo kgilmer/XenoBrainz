@@ -1,4 +1,4 @@
-package pl.qus.xenoamp.musicbrainz;
+package pl.qus.xenoamp.musicbrainz.model;
 
 import org.jdom2.Element;
 

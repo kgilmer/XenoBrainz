@@ -1,4 +1,4 @@
-package pl.qus.xenoamp.musicbrainz;
+package pl.qus.xenoamp.musicbrainz.model;
 
 import org.jdom2.Element;
 
@@ -16,7 +16,7 @@ public class MBRecording {
 
     public MBRecording(Element e) {
         id = e.getAttributeValue("id");
-        //score=Integer.parseInt(e.getAttributeValue("ext:score",MBParser.MBNamespace));
+        //score=Integer.parseInt(e.getAttributeValue("ext:score",MusicBrainzClient.MBNamespace));
         title = e.getChild("title", e.getNamespace()).getValue();
 
         if (e.getChild("length") != null) {

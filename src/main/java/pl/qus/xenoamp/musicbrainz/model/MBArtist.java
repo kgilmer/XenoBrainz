@@ -1,4 +1,4 @@
-package pl.qus.xenoamp.musicbrainz;
+package pl.qus.xenoamp.musicbrainz.model;
 
 import org.jdom2.Element;
 
@@ -12,7 +12,11 @@ public class MBArtist {
         id = e.getAttributeValue("id");
         name = e.getChild("name", e.getNamespace()).getValue();
         sortName = e.getChild("sort-name", e.getNamespace()).getValue();
-        disambiguation = e.getChild("disambiguation", e.getNamespace()).getValue();
+        if (e.getChild("disambiguation", e.getNamespace()) != null) {
+            disambiguation = e.getChild("disambiguation", e.getNamespace()).getValue();
+        } else {
+            disambiguation = null;
+        }
     }
 
     @Override

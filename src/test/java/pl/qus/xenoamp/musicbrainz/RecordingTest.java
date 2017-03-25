@@ -1,6 +1,7 @@
 package pl.qus.xenoamp.musicbrainz;
 
 import org.junit.Test;
+import pl.qus.xenoamp.musicbrainz.model.MBRecording;
 
 import java.util.List;
 
@@ -15,9 +16,9 @@ public class RecordingTest {
 
     @Test
     public void testGetRecording() throws Exception {
-        List<MBRecording> recordingList = MBParser.searchRecording("Noctuary");
+        List<MBRecording> recordingList = MusicBrainzClient.searchRecording("Noctuary");
 
-        assertNotNull("MBParser returns non-null response.", recordingList);
+        assertNotNull("MusicBrainzClient returns non-null response.", recordingList);
         assertFalse("Recording search returns results", recordingList.isEmpty());
 
         boolean tagsFound = false;

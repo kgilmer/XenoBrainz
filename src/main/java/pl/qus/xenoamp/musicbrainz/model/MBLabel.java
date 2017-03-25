@@ -1,4 +1,4 @@
-package pl.qus.xenoamp.musicbrainz;
+package pl.qus.xenoamp.musicbrainz.model;
 
 import org.jdom2.Element;
 
@@ -9,7 +9,11 @@ public class MBLabel {
 
     public MBLabel(Element e) {
         name = e.getChild("name", e.getNamespace()).getValue();
-        sortName = e.getChild("sort-name", e.getNamespace()).getValue();
+        if (e.getChild("sort-name", e.getNamespace()) != null) {
+            sortName = e.getChild("sort-name", e.getNamespace()).getValue();
+        } else {
+            sortName = name;
+        }
         id = e.getAttributeValue("id");
     }
 

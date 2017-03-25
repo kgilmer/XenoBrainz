@@ -1,4 +1,4 @@
-package pl.qus.xenoamp.musicbrainz;
+package pl.qus.xenoamp.musicbrainz.model;
 
 import org.jdom2.Element;
 
@@ -9,7 +9,7 @@ public class MBNameCredit {
 
     public MBNameCredit(Element e) {
         joinphrase = e.getAttributeValue("joinphrase", e.getNamespace());
-        if (e.getChild("artist") != null) {
+        if (e.getChild("artist", e.getNamespace()) != null) {
             artist = new MBArtist(e.getChild("artist", e.getNamespace()));
         } else {
             artist = null;
