@@ -2,13 +2,17 @@ package pl.qus.xenoamp.musicbrainz;
 
 import org.jdom2.Element;
 
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+
 public class MBRecording {
     private final String id;
     private final String title;
     private final int length;
     private final MBArtistCredit artistCredit;
-    private final MBReleaseList releaseList;
-    private final MBTagList tagList;
+    private final List<MBRelease> releaseList;
+    private final List<String> tagList;
 
     public MBRecording(Element e) {
         id = e.getAttributeValue("id");
@@ -21,12 +25,26 @@ public class MBRecording {
             length = -1;
         }
         artistCredit = new MBArtistCredit(e.getChild("artist-credit", e.getNamespace()));
-        releaseList = new MBReleaseList(e.getChild("release-list", e.getNamespace()));
 
-        if (e.getChild("tag-list") != null) {
-            tagList = new MBTagList(e.getChild("tag-list", e.getNamespace()));
+        releaseList = new ArrayList<>();
+        List<Element> elementy = e.getChild("release-list", e.getNamespace()).getChildren();
+
+        for (Element child : elementy) {
+            if (child.getName().equals("release")) releaseList.add(new MBRelease(child));
+        }
+
+        if (e.getChild("tag-list", e.getNamespace()) != null) {
+            tagList = new ArrayList<>();
+            List<Element> tags = e.getChild("tag-list", e.getNamespace()).getChildren();
+
+            for (Element child : tags) {
+                if (child.getName().equals("tag")) {
+                    String tag = child.getChild("name", e.getNamespace()).getValue();
+                    tagList.add(tag);
+                }
+            }
         } else {
-            tagList = null;
+            tagList = Collections.emptyList();
         }
     }
 
@@ -51,11 +69,11 @@ public class MBRecording {
         return artistCredit;
     }
 
-    public MBReleaseList getReleaseList() {
+    public List<MBRelease> getReleaseList() {
         return releaseList;
     }
 
-    public MBTagList getTagList() {
+    public List<String> getTagList() {
         return tagList;
     }
 }

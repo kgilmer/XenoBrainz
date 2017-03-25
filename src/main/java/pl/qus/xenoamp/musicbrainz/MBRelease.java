@@ -2,6 +2,10 @@ package pl.qus.xenoamp.musicbrainz;
 
 import org.jdom2.Element;
 
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+
 public class MBRelease {
     private final String id;
     private final String title;
@@ -13,8 +17,7 @@ public class MBRelease {
     private final String country;
     private final String barcode;
     private final String asin;
-    private final MBLabelInfoList labelInfoList;
-    private final MBMediumList mediumList;
+    private final List<MBLabelInfo> labelInfoList;
 
     public MBRelease(Element e) {
         id = e.getAttributeValue("id");
@@ -22,7 +25,6 @@ public class MBRelease {
         status = e.getChild("status", e.getNamespace()).getValue();
         date = e.getChild("date", e.getNamespace()).getValue();
         country = e.getChild("country", e.getNamespace()).getValue();
-        mediumList = new MBMediumList(e.getChild("medium-list", e.getNamespace()));
         if (e.getChild("text-representation") != null) {
             textRepresentation = new MBTextRepresentation(e.getChild("text-representation", e.getNamespace()));
         } else {
@@ -34,9 +36,14 @@ public class MBRelease {
             artistCredit = null;
         }
         if (e.getChild("label-info-list", e.getNamespace()) != null) {
-            labelInfoList = new MBLabelInfoList(e.getChild("label-info-list", e.getNamespace()));
+            labelInfoList = new ArrayList<>();
+            List<Element> elementy = e.getChild("label-info-list", e.getNamespace()).getChildren();
+
+            for (Element child : elementy) {
+                if (child.getName().equals("label-info")) labelInfoList.add(new MBLabelInfo(child));
+            }
         } else {
-            labelInfoList = null;
+            labelInfoList = Collections.emptyList();
         }
         if (e.getChild("barcode", e.getNamespace()) != null) {
             barcode = e.getChild("barcode", e.getNamespace()).getValue();
@@ -58,7 +65,7 @@ public class MBRelease {
 
     @Override
     public String toString() {
-        return "[RELEASE] Id:" + id + ", Title:" + title + ", status:" + status + ", date:" + date + ", country:" + country + ", Media:" + mediumList;
+        return "[RELEASE] Id:" + id + ", Title:" + title + ", status:" + status + ", date:" + date + ", country:" + country;
     }
 
     public String getId() {
@@ -101,11 +108,7 @@ public class MBRelease {
         return asin;
     }
 
-    public MBLabelInfoList getLabelInfoList() {
+    public List<MBLabelInfo> getLabelInfoList() {
         return labelInfoList;
-    }
-
-    public MBMediumList getMediumList() {
-        return mediumList;
     }
 }
