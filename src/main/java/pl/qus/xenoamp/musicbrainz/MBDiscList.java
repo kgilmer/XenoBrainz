@@ -4,8 +4,7 @@ import org.jdom2.Element;
 
 public class MBDiscList {
 
-	public MBDiscList(Element e)
-	{
-		// TODO: zakodować
-	}
+    public MBDiscList(Element e) {
+        // TODO: zakodować
+    }
 }
