@@ -4,36 +4,31 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 
 public class MBEzRecording {
-    private String id;
-    private String title;
-    private int length;
-    private String artist;
-    private String artistId;
-    private String artistDisamb;
-    private String releaseId;
-    private String releaseTitle;
-    private String releaseDate;
-    private String releaseCountry;
-    int releaseTrack;
-    private int likeness;
+    private final String id;
+    private final String title;
+    private final int length;
+    private final String artist;
+    private final String artistId;
+    private final String artistDisamb;
+    private final String releaseId;
+    private final String releaseTitle;
+    private final String releaseDate;
+    private final String releaseCountry;
+    private final int releaseTrack;
 
     public MBEzRecording(MBRecording r) {
-        id = r.id;
-        title = r.title;
-        length = r.length;
-        artist = r.artistCredit.nameCredit.artist.name;
-        artistId = r.artistCredit.nameCredit.artist.id;
-        artistDisamb = r.artistCredit.nameCredit.artist.disambiguation;
-        try {
-            releaseId = r.releaseList.elementAt(0).id;
-            releaseTitle = r.releaseList.elementAt(0).title;
-            releaseDate = r.releaseList.elementAt(0).date;
-            releaseCountry = r.releaseList.elementAt(0).country;
-            releaseTrack = r.releaseList.elementAt(0).mediumList.elementAt(0).tracklist
-                    .elementAt(0).number;
-        } catch (Exception ex) {
-        }
-        ;
+        id = r.getId();
+        title = r.getTitle();
+        length = r.getLength();
+        artist = r.getArtistCredit().getArtist().getName();
+        artistId = r.getArtistCredit().getArtist().getId();
+        artistDisamb = r.getArtistCredit().getArtist().getDisambiguation();
+        releaseId = r.getReleaseList().elementAt(0).id;
+        releaseTitle = r.getReleaseList().elementAt(0).title;
+        releaseDate = r.getReleaseList().elementAt(0).date;
+        releaseCountry = r.getReleaseList().elementAt(0).country;
+        releaseTrack = r.getReleaseList().elementAt(0).mediumList.elementAt(0).getTracklist()
+                .elementAt(0).getNumber();
     }
 
     public String getTitle() {
@@ -54,16 +49,8 @@ public class MBEzRecording {
         return artistDisamb;
     }
 
-    public int getLikeness() {
-        return likeness;
-    }
-
     public int getDuration() {
         return length;
-    }
-
-    public void setLikeness(int l) {
-        likeness = l;
     }
 
     public String getReleaseTitle() {
@@ -92,9 +79,5 @@ public class MBEzRecording {
 
     public int getReleaseTrack() {
         return releaseTrack;
-    }
-
-    public void setReleaseTrack(int i) {
-        releaseTrack = i;
     }
 }

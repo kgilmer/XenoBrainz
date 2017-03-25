@@ -6,11 +6,7 @@ import java.util.List;
 import java.util.Vector;
 
 public class MBReleaseList extends Vector<MBRelease> {
-    //List<MBRelease> releases;
-
     public MBReleaseList(Element e) {
-        //releases=new Vector<MBRelease>();
-
         List<Element> elementy = e.getChildren();
 
         for (Element child : elementy) {

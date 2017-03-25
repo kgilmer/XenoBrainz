@@ -3,30 +3,31 @@ package pl.qus.xenoamp.musicbrainz;
 import org.jdom2.Element;
 
 public class MBLabel {
-    String id;
-    String name;
-    String sortName;
+    private final String id;
+    private final String name;
+    private final String sortName;
 
     public MBLabel(Element e) {
-        try {
-            name = e.getChild("name", e.getNamespace()).getValue();
-        } catch (Exception ex) {
-        }
-        ;
-        try {
-            sortName = e.getChild("sort-name", e.getNamespace()).getValue();
-        } catch (Exception ex) {
-        }
-        ;
-        try {
-            id = e.getAttributeValue("id");
-        } catch (Exception ex) {
-        }
-        ;
+        name = e.getChild("name", e.getNamespace()).getValue();
+        sortName = e.getChild("sort-name", e.getNamespace()).getValue();
+        id = e.getAttributeValue("id");
     }
 
     @Override
     public String toString() {
         return "[LABEL] " + id + " " + name;
     }
+
+    public String getId() {
+        return id;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public String getSortName() {
+        return sortName;
+    }
+
 }

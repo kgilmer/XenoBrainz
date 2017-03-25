@@ -3,20 +3,12 @@ package pl.qus.xenoamp.musicbrainz;
 import org.jdom2.Element;
 
 public class MBTextRepresentation {
-    String language;
-    String script;
+    private final String language;
+    private final String script;
 
     public MBTextRepresentation(Element e) {
-        try {
-            language = e.getChild("language", e.getNamespace()).getValue();
-        } catch (Exception ex) {
-        }
-        ;
-        try {
-            script = e.getChild("script", e.getNamespace()).getValue();
-        } catch (Exception ex) {
-        }
-        ;
+        language = e.getChild("language", e.getNamespace()).getValue();
+        script = e.getChild("script", e.getNamespace()).getValue();
     }
 
     @Override
@@ -24,4 +16,11 @@ public class MBTextRepresentation {
         return "[TEXTREPRESENTATION] " + language + " " + script;
     }
 
+    public String getLanguage() {
+        return language;
+    }
+
+    public String getScript() {
+        return script;
+    }
 }

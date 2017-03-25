@@ -7,11 +7,6 @@ import java.util.Vector;
 
 public class MBTagList extends Vector<MBTag> {
 
-    /**
-     *
-     */
-    private static final long serialVersionUID = -7347169552391078928L;
-
     public MBTagList(Element e) {
         List<Element> elementy = e.getChildren();
 
