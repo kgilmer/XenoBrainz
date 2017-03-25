@@ -15,16 +15,16 @@ public class MBEzRelease {
     private final String format;
 
     public MBEzRelease(MBRelease r) {
-        artistName = r.artistCredit.getArtist().getName();
-        artistSortName = r.artistCredit.getArtist().getSortName();
-        artistId = r.artistCredit.getArtist().getId();
-        artistDisamb = r.artistCredit.getArtist().getDisambiguation();
-        date = r.date;
-        id = r.id;
-        label = r.labelInfoList.elementAt(0).getLabel().getName();
-        title = r.title;
-        format = r.mediumList.elementAt(0).getFormat();
-        MBTrackList tracki = r.mediumList.elementAt(0).getTracklist();
+        artistName = r.getArtistCredit().getArtist().getName();
+        artistSortName = r.getArtistCredit().getArtist().getSortName();
+        artistId = r.getArtistCredit().getArtist().getId();
+        artistDisamb = r.getArtistCredit().getArtist().getDisambiguation();
+        date = r.getDate();
+        id = r.getId();
+        label = r.getLabelInfoList().elementAt(0).getLabel().getName();
+        title = r.getTitle();
+        format = r.getMediumList().elementAt(0).getFormat();
+        MBTrackList tracki = r.getMediumList().elementAt(0).getTracklist();
         tracks = new Vector<MBEzRecording>();
 
         int i = 1;

@@ -11,10 +11,19 @@ public class MBTrack {
 
     public MBTrack(Element e) {
             number = Integer.parseInt(e.getChild("number", e.getNamespace()).getValue());
-            position = Integer.parseInt(e.getChild("position", e.getNamespace()).getValue());
+            if (e.getChild("position") != null) {
+                position = Integer.parseInt(e.getChild("position", e.getNamespace()).getValue());
+            } else {
+                position = -1;
+            }
             title = e.getChild("title", e.getNamespace()).getValue();
             length = Integer.parseInt(e.getChild("length", e.getNamespace()).getValue());
-            recording = new MBRecording(e.getChild("recording", e.getNamespace()));
+
+            if (e.getChild("recording") != null) {
+                recording = new MBRecording(e.getChild("recording", e.getNamespace()));
+            } else {
+                recording = null;
+            }
     }
 
     @Override

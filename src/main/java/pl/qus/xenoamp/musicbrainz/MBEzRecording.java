@@ -23,11 +23,11 @@ public class MBEzRecording {
         artist = r.getArtistCredit().getArtist().getName();
         artistId = r.getArtistCredit().getArtist().getId();
         artistDisamb = r.getArtistCredit().getArtist().getDisambiguation();
-        releaseId = r.getReleaseList().elementAt(0).id;
-        releaseTitle = r.getReleaseList().elementAt(0).title;
-        releaseDate = r.getReleaseList().elementAt(0).date;
-        releaseCountry = r.getReleaseList().elementAt(0).country;
-        releaseTrack = r.getReleaseList().elementAt(0).mediumList.elementAt(0).getTracklist()
+        releaseId = r.getReleaseList().elementAt(0).getId();
+        releaseTitle = r.getReleaseList().elementAt(0).getTitle();
+        releaseDate = r.getReleaseList().elementAt(0).getDate();
+        releaseCountry = r.getReleaseList().elementAt(0).getCountry();
+        releaseTrack = r.getReleaseList().elementAt(0).getMediumList().elementAt(0).getTracklist()
                 .elementAt(0).getNumber();
     }
 

@@ -3,74 +3,57 @@ package pl.qus.xenoamp.musicbrainz;
 import org.jdom2.Element;
 
 public class MBRelease {
-    String id;
-    String title;
-    String status;
-    String quality;
-    MBTextRepresentation textRepresentation;
-    MBArtistCredit artistCredit;
-    String releaseGroup;
-    String date;
-    String country;
-    String barcode;
-    String asin;
-    MBLabelInfoList labelInfoList;
-    MBMediumList mediumList;
+    private final String id;
+    private final String title;
+    private final String status;
+    private final String quality;
+    private final MBTextRepresentation textRepresentation;
+    private final MBArtistCredit artistCredit;
+    private final String date;
+    private final String country;
+    private final String barcode;
+    private final String asin;
+    private final MBLabelInfoList labelInfoList;
+    private final MBMediumList mediumList;
 
     public MBRelease(Element e) {
         id = e.getAttributeValue("id");
         title = e.getChild("title", e.getNamespace()).getValue();
-        try {
-            status = e.getChild("status", e.getNamespace()).getValue();
-        } catch (Exception ex) {
-        }
-        ;
-        // releaseGroup
-        try {
-            date = e.getChild("date", e.getNamespace()).getValue();
-        } catch (Exception ex) {
-        }
-        ;
-        try {
-            country = e.getChild("country", e.getNamespace()).getValue();
-        } catch (Exception ex) {
-        }
-        ;
-        try {
-            mediumList = new MBMediumList(e.getChild("medium-list", e.getNamespace()));
-        } catch (Exception ex) {
-        }
-        ;
-        try {
+        status = e.getChild("status", e.getNamespace()).getValue();
+        date = e.getChild("date", e.getNamespace()).getValue();
+        country = e.getChild("country", e.getNamespace()).getValue();
+        mediumList = new MBMediumList(e.getChild("medium-list", e.getNamespace()));
+        if (e.getChild("text-representation") != null) {
             textRepresentation = new MBTextRepresentation(e.getChild("text-representation", e.getNamespace()));
-        } catch (Exception ex) {
+        } else {
+            textRepresentation = null;
         }
-        ;
-        try {
+        if (e.getChild("artist-credit", e.getNamespace()) != null) {
             artistCredit = new MBArtistCredit(e.getChild("artist-credit", e.getNamespace()));
-        } catch (Exception ex) {
+        } else {
+            artistCredit = null;
         }
-        ;
-        try {
+        if (e.getChild("label-info-list", e.getNamespace()) != null) {
             labelInfoList = new MBLabelInfoList(e.getChild("label-info-list", e.getNamespace()));
-        } catch (Exception ex) {
+        } else {
+            labelInfoList = null;
         }
-        ;
-        try {
+        if (e.getChild("barcode", e.getNamespace()) != null) {
             barcode = e.getChild("barcode", e.getNamespace()).getValue();
-        } catch (Exception ex) {
+        } else {
+            barcode = null;
         }
-        ;
-        try {
+
+        if (e.getChild("asin", e.getNamespace()) != null) {
             asin = e.getChild("asin", e.getNamespace()).getValue();
-        } catch (Exception ex) {
+        } else {
+            asin = null;
         }
-        ;
-        try {
+        if (e.getChild("quality", e.getNamespace()) != null) {
             quality = e.getChild("quality", e.getNamespace()).getValue();
-        } catch (Exception ex) {
+        } else {
+            quality = null;
         }
-        ;
     }
 
     @Override
@@ -80,5 +63,49 @@ public class MBRelease {
 
     public String getId() {
         return id;
+    }
+
+    public String getTitle() {
+        return title;
+    }
+
+    public String getStatus() {
+        return status;
+    }
+
+    public String getQuality() {
+        return quality;
+    }
+
+    public MBTextRepresentation getTextRepresentation() {
+        return textRepresentation;
+    }
+
+    public MBArtistCredit getArtistCredit() {
+        return artistCredit;
+    }
+
+    public String getDate() {
+        return date;
+    }
+
+    public String getCountry() {
+        return country;
+    }
+
+    public String getBarcode() {
+        return barcode;
+    }
+
+    public String getAsin() {
+        return asin;
+    }
+
+    public MBLabelInfoList getLabelInfoList() {
+        return labelInfoList;
+    }
+
+    public MBMediumList getMediumList() {
+        return mediumList;
     }
 }
