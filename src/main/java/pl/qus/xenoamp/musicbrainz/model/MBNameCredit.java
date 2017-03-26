@@ -1,31 +1,31 @@
 package pl.qus.xenoamp.musicbrainz.model;
 
 import org.jdom2.Element;
+import pl.qus.xenoamp.musicbrainz.util.JDomUtils;
+
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 
 public class MBNameCredit {
 
-    private final String joinphrase;
+    private final String joinPhrase;
     private final MBArtist artist;
 
-    public MBNameCredit(Element e) {
-        joinphrase = e.getAttributeValue("joinphrase", e.getNamespace());
-        if (e.getChild("artist", e.getNamespace()) != null) {
-            artist = new MBArtist(e.getChild("artist", e.getNamespace()));
-        } else {
-            artist = null;
-        }
+    public MBNameCredit(@Nonnull final Element e) {
+        joinPhrase = JDomUtils.getChildValueAsString(e, "joinPhrase");
+        artist = MBArtist.fromElement(e.getChild("artist", e.getNamespace()));
     }
 
     @Override
     public String toString() {
-        return "[NAMECREDIT] " + artist + " " + joinphrase;
+        return "[NAMECREDIT] " + artist + " " + joinPhrase;
     }
 
-    public String getJoinphrase() {
-        return joinphrase;
+    public @Nullable String getJoinphrase() {
+        return joinPhrase;
     }
 
-    public MBArtist getArtist() {
+    public @Nullable MBArtist getArtist() {
         return artist;
     }
 }

@@ -17,9 +17,9 @@ import java.util.List;
 
 public class MusicBrainzClient {
 
-    private static InputStream getStream(String url) throws IOException {
-        URL obj = new URL(url);
-        HttpURLConnection con = (HttpURLConnection) obj.openConnection();
+    private static InputStream getStream(final String url) throws IOException {
+        final URL obj = new URL(url);
+        final HttpURLConnection con = (HttpURLConnection) obj.openConnection();
 
         // optional default is GET
         con.setRequestMethod("GET");
@@ -28,101 +28,101 @@ public class MusicBrainzClient {
         return con.getInputStream();
     }
 
-    public static List<MBRelease> searchRelease(String name) {
-        String query;
+    public static List<MBRelease> searchRelease(final String name) {
+        final String query;
         try {
             query = "http://www.musicbrainz.org/ws/2/release?query="
                     + URLEncoder.encode("\"" + name + "\"", "UTF-8") + "";
 
-            InputStream is = getStream(query);
-            Element whole = MusicBrainzClient.inputStreamToElement(is);
-            Element reclist = whole.getChild("release-list",
+            final InputStream is = getStream(query);
+            final Element whole = MusicBrainzClient.inputStreamToElement(is);
+            final Element reclist = whole.getChild("release-list",
                     whole.getNamespace());
 
-            List<Element> elementy = reclist.getChildren();
-            List<MBRelease> releaseList = new ArrayList<>();
+            final List<Element> elementy = reclist.getChildren();
+            final List<MBRelease> releaseList = new ArrayList<>();
 
-            for (Element child : elementy) {
+            for (final Element child : elementy) {
                 if (child.getName().equals("release")) releaseList.add(new MBRelease(child));
             }
 
             return releaseList;
-        } catch (IOException e) {
+        } catch (final IOException e) {
             e.printStackTrace();
         }
         return null;
     }
 
-    public static List<MBRelease> searchReleaseByBarcode(String name) throws IOException {
-        String query;
+    public static List<MBRelease> searchReleaseByBarcode(final String name) throws IOException {
+        final String query;
         query = "http://www.musicbrainz.org/ws/2/release/?query=barcode:"
                 + name;
 
-        InputStream is = getStream(query);
-        Element whole = MusicBrainzClient.inputStreamToElement(is);
-        Element reclist = whole.getChild("release-list",
+        final InputStream is = getStream(query);
+        final Element whole = MusicBrainzClient.inputStreamToElement(is);
+        final Element reclist = whole.getChild("release-list",
                 whole.getNamespace());
 
-        List<Element> elementy = reclist.getChildren();
-        List<MBRelease> releaseList = new ArrayList<>();
+        final List<Element> elementy = reclist.getChildren();
+        final List<MBRelease> releaseList = new ArrayList<>();
 
-        for (Element child : elementy) {
+        for (final Element child : elementy) {
             if (child.getName().equals("release")) releaseList.add(new MBRelease(child));
         }
 
         return releaseList;
     }
 
-    public static List<MBRecording> searchRecording(String name) throws IOException {
-        String query = "http://www.musicbrainz.org/ws/2/recording?query=" + URLEncoder.encode("\"" + name + "\"", "UTF-8");
+    public static List<MBRecording> searchRecording(final String name) throws IOException {
+        final String query = "http://www.musicbrainz.org/ws/2/recording?query=" + URLEncoder.encode("\"" + name + "\"", "UTF-8");
 
-        InputStream is = getStream(query);
-        Element whole = MusicBrainzClient.inputStreamToElement(is);
-        Element reclist = whole.getChild("recording-list",
+        final InputStream is = getStream(query);
+        final Element whole = MusicBrainzClient.inputStreamToElement(is);
+        final Element reclist = whole.getChild("recording-list",
                 whole.getNamespace());
 
-        List<Element> elementy = reclist.getChildren();
-        List<MBRecording> recordingList = new ArrayList<>();
-        for (Element child : elementy) {
+        final List<Element> elementy = reclist.getChildren();
+        final List<MBRecording> recordingList = new ArrayList<>();
+        for (final Element child : elementy) {
             if (child.getName().equals("recording")) recordingList.add(new MBRecording(child));
         }
 
         return recordingList;
     }
 
-    public static MBRelease lookupRelease(String id) throws IOException {
-        String query = "http://www.musicbrainz.org/ws/2/release/" + id
+    public static MBRelease lookupRelease(final String id) throws IOException {
+        final String query = "http://www.musicbrainz.org/ws/2/release/" + id
                 + "?inc=media+tags+artist-credits+labels+recordings";
-        InputStream is = getStream(query);
-        Element whole = MusicBrainzClient.inputStreamToElement(is);
-        Element release = whole.getChild("release", whole.getNamespace());
+        final InputStream is = getStream(query);
+        final Element whole = MusicBrainzClient.inputStreamToElement(is);
+        final Element release = whole.getChild("release", whole.getNamespace());
         return new MBRelease(release);
     }
 
-    public static MBRecording lookupRecording(String id) throws IOException {
-        String query = "http://musicbrainz.org/ws/2/recording/" + id
+    public static MBRecording lookupRecording(final String id) throws IOException {
+        final String query = "http://musicbrainz.org/ws/2/recording/" + id
                 + "?inc=tags+artist-credits";
-        InputStream is = getStream(query);
-        Element whole = MusicBrainzClient.inputStreamToElement(is);
-        Element recording = whole.getChild("recording", whole.getNamespace());
+        final InputStream is = getStream(query);
+        final Element whole = MusicBrainzClient.inputStreamToElement(is);
+        final Element recording = whole.getChild("recording", whole.getNamespace());
         return new MBRecording(recording);
     }
 
     // release with recording (zwraca release-list)
     // http://musicbrainz.org//ws/2/release?recording=0beff006-2ceb-4a15-ad0f-6daf0976f005
 
-    public static List<MBRelease> findReleaseWithRecording(String id) throws IOException {
-        String query = "http://musicbrainz.org//ws/2/release?recording=" + id;
+    public static List<MBRelease> findReleaseWithRecording(final String id) throws IOException {
+        final String query = "http://musicbrainz.org//ws/2/release?recording=" + id;
 
-        InputStream is = getStream(query);
-        Element whole = MusicBrainzClient.inputStreamToElement(is);
-        Element reclist = whole.getChild("release-list",
+        final InputStream is = getStream(query);
+        final Element whole = MusicBrainzClient.inputStreamToElement(is);
+        final Element reclist = whole.getChild("release-list",
                 whole.getNamespace());
 
-        List<Element> elementy = reclist.getChildren();
-        List<MBRelease> releaseList = new ArrayList<>();
+        final List<Element> elementy = reclist.getChildren();
+        final List<MBRelease> releaseList = new ArrayList<>();
 
-        for (Element child : elementy) {
+        for (final Element child : elementy) {
             if (child.getName().equals("release")) releaseList.add(new MBRelease(child));
         }
 
@@ -132,15 +132,15 @@ public class MusicBrainzClient {
     // zwraca liste tracków na płycie, bezużyteczne (recording-list)
     // http://musicbrainz.org//ws/2/recording?release=54d3ad49-ce0e-4956-a0ee-f40b64078f8b
 
-    public static Element inputStreamToElement(InputStream is) throws IOException {
-        SAXBuilder builder = new SAXBuilder();
+    public static Element inputStreamToElement(final InputStream is) throws IOException {
+        final SAXBuilder builder = new SAXBuilder();
 
-        Document doc;
+        final Document doc;
 
         try {
             doc = builder.build(is);
             return doc.getRootElement();
-        } catch (JDOMException e) {
+        } catch (final JDOMException e) {
             throw new IOException("Parse failure.", e);
         }
     }

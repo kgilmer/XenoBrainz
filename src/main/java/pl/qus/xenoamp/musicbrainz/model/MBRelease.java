@@ -1,9 +1,8 @@
 package pl.qus.xenoamp.musicbrainz.model;
 
 import org.jdom2.Element;
+import pl.qus.xenoamp.musicbrainz.util.JDomUtils;
 
-import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 public class MBRelease {
@@ -18,49 +17,27 @@ public class MBRelease {
     private final String barcode;
     private final String asin;
     private final List<MBLabelInfo> labelInfoList;
+    private final MBCoverArtArchive coverArtArchive;
 
-    public MBRelease(Element e) {
+    public MBRelease(final Element e) {
         id = e.getAttributeValue("id");
         title = e.getChild("title", e.getNamespace()).getValue();
         status = e.getChild("status", e.getNamespace()).getValue();
         date = e.getChild("date", e.getNamespace()).getValue();
         country = e.getChild("country", e.getNamespace()).getValue();
-        if (e.getChild("text-representation") != null) {
-            textRepresentation = new MBTextRepresentation(e.getChild("text-representation", e.getNamespace()));
-        } else {
-            textRepresentation = null;
-        }
+        textRepresentation = MBTextRepresentation.fromElement(e.getChild("text-representation", e.getNamespace()));
         if (e.getChild("artist-credit", e.getNamespace()) != null) {
             artistCredit = new MBArtistCredit(e.getChild("artist-credit", e.getNamespace()));
         } else {
             artistCredit = null;
         }
-        if (e.getChild("label-info-list", e.getNamespace()) != null) {
-            labelInfoList = new ArrayList<>();
-            List<Element> elementy = e.getChild("label-info-list", e.getNamespace()).getChildren();
 
-            for (Element child : elementy) {
-                if (child.getName().equals("label-info")) labelInfoList.add(new MBLabelInfo(child));
-            }
-        } else {
-            labelInfoList = Collections.emptyList();
-        }
-        if (e.getChild("barcode", e.getNamespace()) != null) {
-            barcode = e.getChild("barcode", e.getNamespace()).getValue();
-        } else {
-            barcode = null;
-        }
+        labelInfoList = MBLabelInfo.listFromElement(e.getChild("label-info-list", e.getNamespace()));
+        barcode = JDomUtils.getChildValueAsString(e, "barcode", null);
+        asin = JDomUtils.getChildValueAsString(e, "asin", null);
+        quality = JDomUtils.getChildValueAsString(e, "quality", null);
 
-        if (e.getChild("asin", e.getNamespace()) != null) {
-            asin = e.getChild("asin", e.getNamespace()).getValue();
-        } else {
-            asin = null;
-        }
-        if (e.getChild("quality", e.getNamespace()) != null) {
-            quality = e.getChild("quality", e.getNamespace()).getValue();
-        } else {
-            quality = null;
-        }
+        coverArtArchive = MBCoverArtArchive.fromElement(e.getChild("cover-art-archive", e.getNamespace()));
     }
 
     @Override
@@ -110,5 +87,9 @@ public class MBRelease {
 
     public List<MBLabelInfo> getLabelInfoList() {
         return labelInfoList;
+    }
+
+    public MBCoverArtArchive getCoverArtArchive() {
+        return coverArtArchive;
     }
 }

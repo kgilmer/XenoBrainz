@@ -9,7 +9,7 @@ public class MBTrack {
     private final int length;
     private final MBRecording recording;
 
-    public MBTrack(Element e) {
+    public MBTrack(final Element e) {
             number = Integer.parseInt(e.getChild("number", e.getNamespace()).getValue());
             if (e.getChild("position") != null) {
                 position = Integer.parseInt(e.getChild("position", e.getNamespace()).getValue());

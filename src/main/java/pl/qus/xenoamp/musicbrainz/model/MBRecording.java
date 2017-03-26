@@ -1,6 +1,7 @@
 package pl.qus.xenoamp.musicbrainz.model;
 
 import org.jdom2.Element;
+import pl.qus.xenoamp.musicbrainz.util.JDomUtils;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -12,35 +13,29 @@ public class MBRecording {
     private final int length;
     private final MBArtistCredit artistCredit;
     private final List<MBRelease> releaseList;
-    private final List<String> tagList;
+    private final List<MBTag> tagList;
 
-    public MBRecording(Element e) {
+    public MBRecording(final Element e) {
         id = e.getAttributeValue("id");
         //score=Integer.parseInt(e.getAttributeValue("ext:score",MusicBrainzClient.MBNamespace));
-        title = e.getChild("title", e.getNamespace()).getValue();
-
-        if (e.getChild("length") != null) {
-            length = Integer.parseInt(e.getChild("length", e.getNamespace()).getValue());
-        } else {
-            length = -1;
-        }
+        title = JDomUtils.getChildValueAsString(e, "title");
+        length = JDomUtils.getChildValueAsInteger(e, "length", -1);
         artistCredit = new MBArtistCredit(e.getChild("artist-credit", e.getNamespace()));
 
         releaseList = new ArrayList<>();
-        List<Element> elementy = e.getChild("release-list", e.getNamespace()).getChildren();
+        final List<Element> elementy = e.getChild("release-list", e.getNamespace()).getChildren();
 
-        for (Element child : elementy) {
+        for (final Element child : elementy) {
             if (child.getName().equals("release")) releaseList.add(new MBRelease(child));
         }
 
         if (e.getChild("tag-list", e.getNamespace()) != null) {
             tagList = new ArrayList<>();
-            List<Element> tags = e.getChild("tag-list", e.getNamespace()).getChildren();
+            final List<Element> tags = e.getChild("tag-list", e.getNamespace()).getChildren();
 
-            for (Element child : tags) {
+            for (final Element child : tags) {
                 if (child.getName().equals("tag")) {
-                    String tag = child.getChild("name", e.getNamespace()).getValue();
-                    tagList.add(tag);
+                    tagList.add(new MBTag(child));
                 }
             }
         } else {
@@ -73,7 +68,7 @@ public class MBRecording {
         return releaseList;
     }
 
-    public List<String> getTagList() {
+    public List<MBTag> getTagList() {
         return tagList;
     }
 }
