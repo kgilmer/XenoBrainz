@@ -4,7 +4,15 @@
 
 # Usage
 
-The client class is pl.qus.xenoamp.musicbrainz.MBClient. See unit tests for more details.
+The client class is `pl.qus.xenoamp.musicbrainz.MBClient`. See unit tests for more details.
+
+## Example
+
+```java
+MBClient client = new MBClient();
+//Search for releases with a title
+List<MBRelease> releases = client.searchRelease("Who can you trust?");
+```
 
 # Based on work of ssuukk at https://github.com/ssuukk/XenoBrainz
 
