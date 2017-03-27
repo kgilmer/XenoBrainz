@@ -7,11 +7,18 @@ repositories {
 
 dependencies {
     testCompile 'junit:junit:4.12'
+    // https://mvnrepository.com/artifact/com.google.guava/guava
+    testCompile group: 'com.google.guava', name: 'guava', version: '19.0'
 
     // https://mvnrepository.com/artifact/org.jdom/jdom2
     compile group: 'org.jdom', name: 'jdom2', version: '2.0.6'
 
     // https://mvnrepository.com/artifact/com.google.code.findbugs/jsr305
     compile group: 'com.google.code.findbugs', name: 'jsr305', version: '3.0.1'
-
 }
+
+task copyTestResources(type: Copy) {
+    from "${projectDir}/src/test/resources"
+    into "${buildDir}/classes/test"
+}
+processTestResources.dependsOn copyTestResources

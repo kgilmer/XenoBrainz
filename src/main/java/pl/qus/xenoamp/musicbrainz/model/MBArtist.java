@@ -5,8 +5,6 @@ import pl.qus.xenoamp.musicbrainz.util.JDomUtils;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
-import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 public class MBArtist {

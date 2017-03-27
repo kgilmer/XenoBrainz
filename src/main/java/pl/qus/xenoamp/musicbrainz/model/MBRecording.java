@@ -17,17 +17,11 @@ public class MBRecording {
 
     public MBRecording(final Element e) {
         id = e.getAttributeValue("id");
-        //score=Integer.parseInt(e.getAttributeValue("ext:score",MusicBrainzClient.MBNamespace));
+        //score=Integer.parseInt(e.getAttributeValue("ext:score",MBClient.MBNamespace));
         title = JDomUtils.getChildValueAsString(e, "title");
         length = JDomUtils.getChildValueAsInteger(e, "length", -1);
         artistCredit = new MBArtistCredit(e.getChild("artist-credit", e.getNamespace()));
-
-        releaseList = new ArrayList<>();
-        final List<Element> elementy = e.getChild("release-list", e.getNamespace()).getChildren();
-
-        for (final Element child : elementy) {
-            if (child.getName().equals("release")) releaseList.add(new MBRelease(child));
-        }
+        releaseList = MBRelease.listFromElement(e.getChild("release-list", e.getNamespace()));
 
         if (e.getChild("tag-list", e.getNamespace()) != null) {
             tagList = new ArrayList<>();

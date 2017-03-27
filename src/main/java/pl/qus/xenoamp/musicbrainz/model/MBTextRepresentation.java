@@ -2,7 +2,6 @@ package pl.qus.xenoamp.musicbrainz.model;
 
 import org.jdom2.Element;
 
-import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 public class MBTextRepresentation {
@@ -27,7 +26,7 @@ public class MBTextRepresentation {
         return script;
     }
 
-    public static @Nullable MBTextRepresentation fromElement(@Nonnull final Element e) {
+    public static @Nullable MBTextRepresentation fromElement(@Nullable final Element e) {
         try {
             String language = e.getChild("language", e.getNamespace()).getValue();
             String script = e.getChild("script", e.getNamespace()).getValue();

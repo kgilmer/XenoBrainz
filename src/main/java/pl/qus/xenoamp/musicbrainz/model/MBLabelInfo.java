@@ -4,6 +4,7 @@ import org.jdom2.Element;
 import pl.qus.xenoamp.musicbrainz.util.JDomUtils;
 
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -33,19 +34,21 @@ public class MBLabelInfo {
         return label;
     }
 
-    public static @Nonnull List<MBLabelInfo> listFromElement(@Nonnull final Element e) {
-        final List<MBLabelInfo> labelInfoList;
+    public static @Nonnull List<MBLabelInfo> listFromElement(@Nullable final Element e) {
+        try {
+            final List<MBLabelInfo> labelInfoList;
 
-        if (!e.getChildren().isEmpty()) {
-            labelInfoList = new ArrayList<>();
-            for (final Element child : e.getChildren()) {
-                if (child.getName().equals("label-info")) labelInfoList.add(new MBLabelInfo(child));
+            if (!e.getChildren().isEmpty()) {
+                labelInfoList = new ArrayList<>();
+                for (final Element child : e.getChildren()) {
+                    if (child.getName().equals("label-info")) labelInfoList.add(new MBLabelInfo(child));
+                }
+
+                return labelInfoList;
             }
-        } else {
-            labelInfoList = Collections.emptyList();
+        } catch (final RuntimeException ex) {
         }
 
-        return labelInfoList;
-
+        return Collections.emptyList();
     }
 }

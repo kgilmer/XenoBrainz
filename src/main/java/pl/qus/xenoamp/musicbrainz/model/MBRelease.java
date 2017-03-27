@@ -3,6 +3,10 @@ package pl.qus.xenoamp.musicbrainz.model;
 import org.jdom2.Element;
 import pl.qus.xenoamp.musicbrainz.util.JDomUtils;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 public class MBRelease {
@@ -23,8 +27,8 @@ public class MBRelease {
         id = e.getAttributeValue("id");
         title = e.getChild("title", e.getNamespace()).getValue();
         status = e.getChild("status", e.getNamespace()).getValue();
-        date = e.getChild("date", e.getNamespace()).getValue();
-        country = e.getChild("country", e.getNamespace()).getValue();
+        date = JDomUtils.getChildValueAsString(e, "date");
+        country = JDomUtils.getChildValueAsString(e, "country");
         textRepresentation = MBTextRepresentation.fromElement(e.getChild("text-representation", e.getNamespace()));
         if (e.getChild("artist-credit", e.getNamespace()) != null) {
             artistCredit = new MBArtistCredit(e.getChild("artist-credit", e.getNamespace()));
@@ -69,11 +73,11 @@ public class MBRelease {
         return artistCredit;
     }
 
-    public String getDate() {
+    public @Nullable String getDate() {
         return date;
     }
 
-    public String getCountry() {
+    public @Nullable String getCountry() {
         return country;
     }
 
@@ -91,5 +95,21 @@ public class MBRelease {
 
     public MBCoverArtArchive getCoverArtArchive() {
         return coverArtArchive;
+    }
+
+    public static @Nonnull List<MBRelease> listFromElement(Element e) {
+        try {
+            final List<MBRelease> releaseList = new ArrayList<>();
+            final List<Element> elementy = e.getChildren();
+
+            for (final Element child : elementy) {
+                if (child.getName().equals("release")) releaseList.add(new MBRelease(child));
+            }
+
+            return releaseList;
+        } catch (final RuntimeException ex) {
+        }
+
+        return Collections.emptyList();
     }
 }

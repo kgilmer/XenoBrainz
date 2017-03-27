@@ -33,7 +33,9 @@ public class ReleaseTest {
 
     @Test
     public void testGetRelease() throws Exception {
-        List<MBRelease> releases = MusicBrainzClient.searchRelease("Who can you trust?");
+        MBClient client = new MBClient();
+
+        List<MBRelease> releases = client.searchRelease("Who can you trust?");
 
         assertNotNull("Response not null.", releases);
 
@@ -44,7 +46,7 @@ public class ReleaseTest {
 
     @Test
     public void testFieldCompleteness() throws Exception {
-        MBRelease release = MusicBrainzClient.lookupRelease(TEST_RELEASE_ID);
+        MBRelease release = (new MBClient()).lookupRelease(TEST_RELEASE_ID);
 
         assertNotNull("Release is found.", release);
 
