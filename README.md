@@ -28,9 +28,12 @@ List<MBRecording> results = mbClient.searchRecording(
                         RELEASE.is("Synchronicity"));
 ```
 
-# Based on work of ssuukk at https://github.com/ssuukk/XenoBrainz
+## Based on work of ssuukk at https://github.com/ssuukk/XenoBrainz
 
 ## Changelog
+
+### Release 0.3
+* Bugfix
 
 ### Release 0.2
 * Multi-term search support.

@@ -7,7 +7,7 @@ import javax.annotation.Nonnull;
  */
 public class RecordingTerm {
 
-    enum RecordingKey {
+    public enum RecordingKey {
         ARID,
         ARTIST,
         ARTISTNAME,

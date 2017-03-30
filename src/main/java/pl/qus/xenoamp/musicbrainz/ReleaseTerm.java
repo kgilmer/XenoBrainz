@@ -5,7 +5,7 @@ package pl.qus.xenoamp.musicbrainz;
  */
 public class ReleaseTerm {
 
-    enum ReleaseKey {
+    public enum ReleaseKey {
         ARID,
         ARTIST,
         ARTISTNAME,
