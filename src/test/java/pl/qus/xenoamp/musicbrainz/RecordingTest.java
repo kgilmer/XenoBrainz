@@ -10,6 +10,7 @@ import java.util.List;
 import java.util.Set;
 
 import static org.junit.Assert.*;
+import static pl.qus.xenoamp.musicbrainz.RecordingTerm.RecordingKey.*;
 
 /**
  * Created by kgilmer on 3/24/17.
@@ -81,5 +82,19 @@ public class RecordingTest {
         assertTrue("Artist has expected name", artist.getName().equals(TEST_ARTIST_NAME));
         assertTrue("Artist has expected id", artist.getId().equals(TEST_ARTIST_ID));
         
+    }
+
+    @Test
+    public void testMultiTermQuery() throws Exception {
+        MBClient mbClient = new MBClient();
+
+        List<MBRecording> results = mbClient
+                .searchRecording(
+                        ARTIST.is("the police"),
+                        RECORDING.is("mother"),
+                        RELEASE.is("Synchronicity"));
+
+        assertNotNull("Non-null return", results);
+        assertTrue("Some results returned", results.size() > 0);
     }
 }

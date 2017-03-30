@@ -18,7 +18,7 @@ public class ClientTest {
     public void nullInputTest() throws Exception {
         MBClient client = new MBClient();
 
-        client.searchRecording(null);
+        client.searchRecording((String) null);
     }
 
 

@@ -1,5 +1,6 @@
 apply plugin: 'java'
 apply plugin: 'findbugs'
+apply plugin: 'jacoco'
 
 repositories {
     jcenter()
@@ -15,6 +16,13 @@ dependencies {
 
     // https://mvnrepository.com/artifact/com.google.code.findbugs/jsr305
     compile group: 'com.google.code.findbugs', name: 'jsr305', version: '3.0.1'
+}
+
+jacocoTestReport {
+    reports {
+        xml.enabled true
+        html.enabled false
+    }
 }
 
 task copyTestResources(type: Copy) {

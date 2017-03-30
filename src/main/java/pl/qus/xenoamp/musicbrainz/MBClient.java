@@ -11,6 +11,7 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.UnsupportedEncodingException;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.net.URLEncoder;
@@ -40,6 +41,10 @@ public class MBClient {
         this(HTTP_URL_CONNECTION_LOADER);
     }
 
+    public @Nonnull List<MBRelease> searchRelease(@Nonnull final String term) throws IOException {
+        return searchRelease(ReleaseTerm.ReleaseKey.RELEASE.is(term));
+    }
+
     /**
      * Search releases.
      *
@@ -47,11 +52,8 @@ public class MBClient {
      * @return List of 0 or more MBRecordings
      * @throws IOException and IllegalArgumentException
      */
-    public @Nonnull List<MBRelease> searchRelease(@Nonnull final String name) throws IOException {
-        guardInput(name);
-        final String query = "http://www.musicbrainz.org/ws/2/release?query="
-                + URLEncoder.encode("\"" + name + "\"", "UTF-8") + "";
-
+    public @Nonnull List<MBRelease> searchRelease(@Nonnull final ReleaseTerm ... terms) throws IOException {
+        final String query = generateQuery("http://www.musicbrainz.org/ws/2/release?query=", terms);
         final InputStream is = httpUrlConnectionLoader.getStream(query);
         final Element whole = MBClient.inputStreamToElement(is);
 
@@ -70,6 +72,34 @@ public class MBClient {
         }
 
         return Collections.emptyList();
+    }
+
+    private String generateQuery(final String prefix, final Object[] terms) throws UnsupportedEncodingException {
+        if (prefix == null || prefix.length() == 0 || terms == null || terms.length == 0) {
+            throw new IllegalArgumentException("Null or empty input params.");
+        }
+
+        for (Object term : terms) {
+            guardInput(term.toString());
+        }
+
+        final String query;
+        if (terms.length == 1) {
+            query = prefix + URLEncoder.encode(terms[0].toString(), "UTF-8");
+        } else {
+            final StringBuilder sb = new StringBuilder(prefix);
+            int index = 1;
+            for (final Object t : terms) {
+                sb.append(URLEncoder.encode(t.toString(), "UTF-8"));
+                if (index < terms.length) {
+                    sb.append(URLEncoder.encode(" AND ", "UTF-8"));
+                }
+                index++;
+            }
+            query = sb.toString();
+        }
+
+        return query;
     }
 
     /**
@@ -101,18 +131,19 @@ public class MBClient {
         return Collections.emptyList();
     }
 
+    public @Nonnull List<MBRecording> searchRecording(@Nonnull final String term) throws IOException {
+        return searchRecording(RecordingTerm.RecordingKey.RECORDING.is(term));
+    }
+
     /**
      * Search recordings.
      *
-     * @param name must be non-null, non-empty.  Cannot contain " character.
+     * @param terms must be non-null, non-empty.  Cannot contain " character.
      * @return List of 0 or more MBRecordings
      * @throws IOException and IllegalArgumentException
      */
-    public @Nonnull List<MBRecording> searchRecording(@Nonnull final String name) throws IOException {
-        guardInput(name);
-        final String query = "http://www.musicbrainz.org/ws/2/recording?query=" + URLEncoder.encode("\"" + name + "\"", "UTF-8");
-
-        System.out.println("query: " + query);
+    public @Nonnull List<MBRecording> searchRecording(@Nonnull final RecordingTerm ... terms) throws IOException {
+        final String query = generateQuery("http://www.musicbrainz.org/ws/2/recording?query=", terms);
         final InputStream is = httpUrlConnectionLoader.getStream(query);
         final Element whole = MBClient.inputStreamToElement(is);
         if (whole != null) {
@@ -143,10 +174,6 @@ public class MBClient {
 
         if (name.trim().length() == 0) {
             throw new IllegalArgumentException("Input cannot be empty.");
-        }
-
-        if (name.contains("\"")) {
-            throw new IllegalArgumentException("Input contains an illegal character.");
         }
     }
 
@@ -226,7 +253,7 @@ public class MBClient {
     /**
      * Default {@link HTTPGetDataLoader} implementation using HttpURLConnection.
      */
-    private static HTTPGetDataLoader HTTP_URL_CONNECTION_LOADER = new HTTPGetDataLoader() {
+    public static HTTPGetDataLoader HTTP_URL_CONNECTION_LOADER = new HTTPGetDataLoader() {
         @Nonnull
         @Override
         public InputStream getStream(@Nonnull final String url) throws IOException {

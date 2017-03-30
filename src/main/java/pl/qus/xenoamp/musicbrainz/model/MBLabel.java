@@ -1,7 +1,7 @@
 package pl.qus.xenoamp.musicbrainz.model;
 
 import org.jdom2.Element;
-import pl.qus.xenoamp.musicbrainz.util.JDomUtils;
+import pl.qus.xenoamp.musicbrainz.util.JDomUtil;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
@@ -39,8 +39,8 @@ public class MBLabel {
 
     public static @Nullable MBLabel fromElement(final Element e) {
         try {
-            final String name = JDomUtils.getChildValueAsString(e, "name");
-            final String sortName = JDomUtils.getChildValueAsString(e, "sort-name", name);
+            final String name = JDomUtil.getChildValueAsString(e, "name");
+            final String sortName = JDomUtil.getChildValueAsString(e, "sort-name", name);
             final String id = e.getAttributeValue("id");
 
             if (name != null && sortName != null && id != null) {

@@ -52,7 +52,11 @@ public class BulkRecordingLookupTest {
         Random rnd = new Random();
         MBClient client = new MBClient();
 
-        while (!lines.isEmpty()) {
+        //Running the test on the entire data set takes ~20 minutes.
+        int count = 10;
+
+        while (!lines.isEmpty() && count > 0) {
+            count--;
             String line = lines.remove(rnd.nextInt(lines.size()));
             if (line.startsWith("#")) {
                 continue;

@@ -6,7 +6,9 @@
 
 The client class is `pl.qus.xenoamp.musicbrainz.MBClient`. See unit tests for more details.
 
-## Example
+## Examples
+
+### Basic Search
 
 ```java
 MBClient client = new MBClient();
@@ -14,9 +16,24 @@ MBClient client = new MBClient();
 List<MBRelease> releases = client.searchRelease("Who can you trust?");
 ```
 
+### Multiterm Search
+
+```java
+import static pl.qus.xenoamp.musicbrainz.RecordingTerm.RecordingKey.*;
+
+MBClient client = new MBClient();
+List<MBRecording> results = mbClient.searchRecording(
+                        ARTIST.is("the police"),
+                        RECORDING.is("mother"),
+                        RELEASE.is("Synchronicity"));
+```
+
 # Based on work of ssuukk at https://github.com/ssuukk/XenoBrainz
 
 ## Changelog
+
+### Release 0.2
+* Multi-term search support.
 
 ### Release 0.1
 * Made code more idiomatic.

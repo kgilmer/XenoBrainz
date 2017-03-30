@@ -1,7 +1,7 @@
 package pl.qus.xenoamp.musicbrainz.model;
 
 import org.jdom2.Element;
-import pl.qus.xenoamp.musicbrainz.util.JDomUtils;
+import pl.qus.xenoamp.musicbrainz.util.JDomUtil;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
@@ -17,7 +17,7 @@ public class MBLabelInfo {
     private final MBLabel label;
 
     private MBLabelInfo(final Element e) {
-        catalogNumber = JDomUtils.getChildValueAsString(e, "catalog-number");
+        catalogNumber = JDomUtil.getChildValueAsString(e, "catalog-number");
         label = MBLabel.fromElement(e.getChild("label", e.getNamespace()));
     }
 

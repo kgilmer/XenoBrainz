@@ -1,7 +1,7 @@
 package pl.qus.xenoamp.musicbrainz.model;
 
 import org.jdom2.Element;
-import pl.qus.xenoamp.musicbrainz.util.JDomUtils;
+import pl.qus.xenoamp.musicbrainz.util.JDomUtil;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
@@ -12,7 +12,7 @@ public class MBNameCredit {
     private final MBArtist artist;
 
     public MBNameCredit(@Nonnull final Element e) {
-        joinPhrase = JDomUtils.getChildValueAsString(e, "joinPhrase");
+        joinPhrase = JDomUtil.getChildValueAsString(e, "joinPhrase");
         artist = MBArtist.fromElement(e.getChild("artist", e.getNamespace()));
     }
 

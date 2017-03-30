@@ -1,7 +1,7 @@
 package pl.qus.xenoamp.musicbrainz.model;
 
 import org.jdom2.Element;
-import pl.qus.xenoamp.musicbrainz.util.JDomUtils;
+import pl.qus.xenoamp.musicbrainz.util.JDomUtil;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
@@ -27,8 +27,8 @@ public class MBRelease {
         id = e.getAttributeValue("id");
         title = e.getChild("title", e.getNamespace()).getValue();
         status = e.getChild("status", e.getNamespace()).getValue();
-        date = JDomUtils.getChildValueAsString(e, "date");
-        country = JDomUtils.getChildValueAsString(e, "country");
+        date = JDomUtil.getChildValueAsString(e, "date");
+        country = JDomUtil.getChildValueAsString(e, "country");
         textRepresentation = MBTextRepresentation.fromElement(e.getChild("text-representation", e.getNamespace()));
         if (e.getChild("artist-credit", e.getNamespace()) != null) {
             artistCredit = new MBArtistCredit(e.getChild("artist-credit", e.getNamespace()));
@@ -37,9 +37,9 @@ public class MBRelease {
         }
 
         labelInfoList = MBLabelInfo.listFromElement(e.getChild("label-info-list", e.getNamespace()));
-        barcode = JDomUtils.getChildValueAsString(e, "barcode", null);
-        asin = JDomUtils.getChildValueAsString(e, "asin", null);
-        quality = JDomUtils.getChildValueAsString(e, "quality", null);
+        barcode = JDomUtil.getChildValueAsString(e, "barcode", null);
+        asin = JDomUtil.getChildValueAsString(e, "asin", null);
+        quality = JDomUtil.getChildValueAsString(e, "quality", null);
 
         coverArtArchive = MBCoverArtArchive.fromElement(e.getChild("cover-art-archive", e.getNamespace()));
     }

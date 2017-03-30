@@ -11,6 +11,7 @@ import java.util.List;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
+import static pl.qus.xenoamp.musicbrainz.ReleaseTerm.ReleaseKey.*;
 
 /**
  * Created by kgilmer on 3/24/17.
@@ -86,5 +87,17 @@ public class ReleaseTest {
         List<MBLabelInfo> labels = release.getLabelInfoList();
         assertNotNull("Release has labels.", labels);
         assertTrue("expected label count.", labels.size() == 1);
+    }
+
+    @Test
+    public void testMultiTerm() throws Exception {
+        MBClient mbclient = new MBClient();
+
+        List<MBRelease> releases = mbclient.searchRelease(
+                ARTIST.is("The Police"),
+                RELEASE.is("Synchronicity"));
+
+        assertNotNull("Non-null return", releases);
+        assertTrue("Some results returned", releases.size() > 0);
     }
 }

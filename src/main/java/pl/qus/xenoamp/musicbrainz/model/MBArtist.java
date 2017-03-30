@@ -1,7 +1,7 @@
 package pl.qus.xenoamp.musicbrainz.model;
 
 import org.jdom2.Element;
-import pl.qus.xenoamp.musicbrainz.util.JDomUtils;
+import pl.qus.xenoamp.musicbrainz.util.JDomUtil;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
@@ -49,9 +49,9 @@ public class MBArtist {
 
     public static @Nullable MBArtist fromElement(@Nonnull final Element e) {
         final String id = e.getAttributeValue("id");
-        final String name = JDomUtils.getChildValueAsString(e, "name");
-        final String sortName = JDomUtils.getChildValueAsString(e, "sort-name");
-        final String disambiguation = JDomUtils.getChildValueAsString(e, "disambiguation");
+        final String name = JDomUtil.getChildValueAsString(e, "name");
+        final String sortName = JDomUtil.getChildValueAsString(e, "sort-name");
+        final String disambiguation = JDomUtil.getChildValueAsString(e, "disambiguation");
         final List<MBTag> tagList = MBTag.listFromElements(e.getChild("tag-list", e.getNamespace()));
 
         if (id != null && name != null && tagList != null) {

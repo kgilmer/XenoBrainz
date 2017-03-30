@@ -1,7 +1,7 @@
 package pl.qus.xenoamp.musicbrainz.model;
 
 import org.jdom2.Element;
-import pl.qus.xenoamp.musicbrainz.util.JDomUtils;
+import pl.qus.xenoamp.musicbrainz.util.JDomUtil;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -18,8 +18,8 @@ public class MBRecording {
     public MBRecording(final Element e) {
         id = e.getAttributeValue("id");
         //score=Integer.parseInt(e.getAttributeValue("ext:score",MBClient.MBNamespace));
-        title = JDomUtils.getChildValueAsString(e, "title");
-        length = JDomUtils.getChildValueAsInteger(e, "length", -1);
+        title = JDomUtil.getChildValueAsString(e, "title");
+        length = JDomUtil.getChildValueAsInteger(e, "length", -1);
         artistCredit = new MBArtistCredit(e.getChild("artist-credit", e.getNamespace()));
         releaseList = MBRelease.listFromElement(e.getChild("release-list", e.getNamespace()));
 

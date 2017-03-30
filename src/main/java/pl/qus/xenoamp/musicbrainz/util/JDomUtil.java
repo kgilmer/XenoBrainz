@@ -8,9 +8,9 @@ import javax.annotation.Nullable;
 /**
  * Helper code for the jdom2 API.
  */
-public final class JDomUtils {
+public final class JDomUtil {
 
-    private JDomUtils() {
+    private JDomUtil() {
     }
 
     /**
