@@ -2,7 +2,6 @@ package pl.qus.xenoamp.musicbrainz;
 
 import org.jdom2.Document;
 import org.jdom2.Element;
-import org.jdom2.JDOMException;
 import org.jdom2.input.SAXBuilder;
 import pl.qus.xenoamp.musicbrainz.model.MBRecording;
 import pl.qus.xenoamp.musicbrainz.model.MBRelease;
@@ -25,6 +24,11 @@ import java.util.List;
 public class MBClient {
 
     private final HTTPGetDataLoader httpUrlConnectionLoader;
+    private ErrorListener errorListener;
+
+    public interface ErrorListener {
+        void onError(Throwable throwable);
+    }
 
     /**
      * Makes network requests to MB server.
@@ -33,12 +37,34 @@ public class MBClient {
         @Nonnull InputStream getStream(@Nonnull final String url) throws IOException;
     }
 
-    public MBClient(@Nonnull final HTTPGetDataLoader httpUrlConnectionLoader) {
+    /**
+     *
+     * @param httpUrlConnectionLoader resolves URLs to content.
+     * @param errorCallback errors will be passed as they occur.
+     */
+    public MBClient(@Nonnull final HTTPGetDataLoader httpUrlConnectionLoader, @Nullable final ErrorListener errorCallback) {
         this.httpUrlConnectionLoader = httpUrlConnectionLoader;
+        this.errorListener = errorCallback;
+    }
+
+    /**
+     *
+     * @param httpUrlConnectionLoader resolves URLs to content.
+     */
+    public MBClient(@Nonnull final HTTPGetDataLoader httpUrlConnectionLoader) {
+        this(httpUrlConnectionLoader, null);
     }
 
     public MBClient() {
         this(HTTP_URL_CONNECTION_LOADER);
+    }
+
+    public void setErrorListener(@Nullable final ErrorListener errorListener) {
+        this.errorListener = errorListener;
+    }
+
+    public @Nullable ErrorListener getErrorListener() {
+        return errorListener;
     }
 
     public @Nonnull List<MBRelease> searchRelease(@Nonnull final String term) throws IOException {
@@ -55,7 +81,7 @@ public class MBClient {
     public @Nonnull List<MBRelease> searchRelease(@Nonnull final ReleaseTerm ... terms) throws IOException {
         final String query = generateQuery("http://www.musicbrainz.org/ws/2/release?query=", terms);
         final InputStream is = httpUrlConnectionLoader.getStream(query);
-        final Element whole = MBClient.inputStreamToElement(is);
+        final Element whole = inputStreamToElement(is);
 
         if (whole != null) {
             final Element releaseNode = whole.getChild("release-list",
@@ -113,7 +139,7 @@ public class MBClient {
         final String query = "http://www.musicbrainz.org/ws/2/release/?query=barcode:" + name;
 
         final InputStream is = httpUrlConnectionLoader.getStream(query);
-        final Element whole = MBClient.inputStreamToElement(is);
+        final Element whole = inputStreamToElement(is);
         if (whole != null) {
             final Element reclist = whole.getChild("release-list",
                     whole.getNamespace());
@@ -145,7 +171,7 @@ public class MBClient {
     public @Nonnull List<MBRecording> searchRecording(@Nonnull final RecordingTerm ... terms) throws IOException {
         final String query = generateQuery("http://www.musicbrainz.org/ws/2/recording?query=", terms);
         final InputStream is = httpUrlConnectionLoader.getStream(query);
-        final Element whole = MBClient.inputStreamToElement(is);
+        final Element whole = inputStreamToElement(is);
         if (whole != null) {
             final Element reclist = whole.getChild("recording-list",
                     whole.getNamespace());
@@ -188,7 +214,7 @@ public class MBClient {
         final String query = "http://www.musicbrainz.org/ws/2/release/" + id
                 + "?inc=media+tags+artist-credits+labels+recordings";
         final InputStream is = httpUrlConnectionLoader.getStream(query);
-        final Element whole = MBClient.inputStreamToElement(is);
+        final Element whole = inputStreamToElement(is);
         if (whole != null && whole.getChild("release", whole.getNamespace()) != null) {
             final Element release = whole.getChild("release", whole.getNamespace());
 
@@ -208,7 +234,7 @@ public class MBClient {
         final String query = "http://musicbrainz.org/ws/2/recording/" + id
                 + "?inc=tags+artist-credits";
         final InputStream is = httpUrlConnectionLoader.getStream(query);
-        final Element whole = MBClient.inputStreamToElement(is);
+        final Element whole = inputStreamToElement(is);
 
         if (whole != null && whole.getChild("recording", whole.getNamespace()) != null) {
             final Element recording = whole.getChild("recording", whole.getNamespace());
@@ -231,7 +257,7 @@ public class MBClient {
         final String query = "http://musicbrainz.org//ws/2/release?recording=" + id;
 
         final InputStream is = httpUrlConnectionLoader.getStream(query);
-        final Element whole = MBClient.inputStreamToElement(is);
+        final Element whole = inputStreamToElement(is);
 
         if (whole != null && whole.getChild("release-list", whole.getNamespace()) != null) {
             final Element reclist = whole.getChild("release-list",
@@ -268,23 +294,16 @@ public class MBClient {
         }
     };
 
-    // zwraca liste tracków na płycie, bezużyteczne (recording-list)
-    // http://musicbrainz.org//ws/2/recording?release=54d3ad49-ce0e-4956-a0ee-f40b64078f8b
-
-    private static Element inputStreamToElement(final InputStream is) {
+    private @Nullable Element inputStreamToElement(@Nonnull final InputStream is) {
         final SAXBuilder builder = new SAXBuilder();
-
-        //TODO: Add error listener callback facility.
 
         try {
             final Document doc = builder.build(is);
             return doc.getRootElement();
-        } catch (final JDOMException e) {
-            e.printStackTrace();
-            //throw new IOException("Parse failure.", e);
-            return null;
-        } catch (final IOException e) {
-            e.printStackTrace();
+        } catch (final Exception e) {
+            if (errorListener != null) {
+                errorListener.onError(e);
+            }
             return null;
         }
     }

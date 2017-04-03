@@ -16,7 +16,7 @@ MBClient client = new MBClient();
 List<MBRelease> releases = client.searchRelease("Who can you trust?");
 ```
 
-### Multiterm Search
+### Multi-term Search
 
 ```java
 import static pl.qus.xenoamp.musicbrainz.RecordingTerm.RecordingKey.*;
@@ -28,9 +28,19 @@ List<MBRecording> results = mbClient.searchRecording(
                         RELEASE.is("Synchronicity"));
 ```
 
+# Notes
+
+* Using the default HTTP resolver will pass `com.github.kgilmer:XenoBrainz:<version>` as the user agent.  If you supply your own `pl.qus.xenoamp.musicbrainz.MBClient.HTTPGetDataLoader` you must be sure to specify an appropriate user agent.
+* The MusicBrainz service is rate limited.  This library implements no rate limiting logic internally, so you'll need to add that yourself according to your use case.
+
 ## Based on work of ssuukk at https://github.com/ssuukk/XenoBrainz
 
 ## Changelog
+
+### Release 0.4
+* Some more javadoc.
+* Added error handler interface for HTTP and XML parsing errors.
+* Specify Java 1.7 for Android compatibility.
 
 ### Release 0.3
 * Bugfix

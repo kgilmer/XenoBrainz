@@ -1,10 +1,13 @@
 package pl.qus.xenoamp.musicbrainz;
 
 /**
- * Created by kgilmer on 3/29/17.
+ * All possible query terms for the Release entity.
  */
 public class ReleaseTerm {
 
+    /**
+     * Query terms for releases.
+     */
     public enum ReleaseKey {
         ARID,
         ARTIST,
@@ -38,6 +41,12 @@ public class ReleaseTerm {
         TRACKSMEDIUM,
         TYPE;
 
+        /**
+         * Return term composed of name and value.
+         *
+         * @param value value for the given term.
+         * @return term composed of name and value.
+         */
         public ReleaseTerm is(final String value) {
             if (value == null || value.length() == 0 || value.contains("\"")) {
                 throw new IllegalArgumentException("Input empty or contains an illegal character.");

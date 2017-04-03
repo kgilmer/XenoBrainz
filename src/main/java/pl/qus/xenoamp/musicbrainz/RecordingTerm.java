@@ -3,10 +3,13 @@ package pl.qus.xenoamp.musicbrainz;
 import javax.annotation.Nonnull;
 
 /**
- * Created by kgilmer on 3/29/17.
+ * All possible query terms for the Recording entity.
  */
 public class RecordingTerm {
 
+    /**
+     * Recording terms
+     */
     public enum RecordingKey {
         ARID,
         ARTIST,
@@ -38,6 +41,12 @@ public class RecordingTerm {
         TYPE,
         VIDEO;
 
+        /**
+         * Return term composed of name and value.
+         *
+         * @param value value for the given term.
+         * @return term composed of name and value.
+         */
         public RecordingTerm is(@Nonnull final String value) {
             if (value == null || value.length() == 0 || value.contains("\"")) {
                 throw new IllegalArgumentException("Input empty or contains an illegal character.");
