@@ -97,7 +97,7 @@ public class MBRelease {
         return coverArtArchive;
     }
 
-    public static @Nonnull List<MBRelease> listFromElement(Element e) {
+    public static @Nonnull List<MBRelease> listFromElement(final Element e) {
         try {
             final List<MBRelease> releaseList = new ArrayList<>();
             final List<Element> elementy = e.getChildren();

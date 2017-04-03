@@ -48,7 +48,7 @@ public class MBClient {
     /**
      * Search releases.
      *
-     * @param name must be non-null, non-empty.  Cannot contain " character.
+     * @param terms ReleaseTerm must be non-null, non-empty.  Cannot contain " character.
      * @return List of 0 or more MBRecordings
      * @throws IOException and IllegalArgumentException
      */
@@ -79,7 +79,7 @@ public class MBClient {
             throw new IllegalArgumentException("Null or empty input params.");
         }
 
-        for (Object term : terms) {
+        for (final Object term : terms) {
             guardInput(term.toString());
         }
 
@@ -260,9 +260,9 @@ public class MBClient {
             final URL obj = new URL(url);
             final HttpURLConnection con = (HttpURLConnection) obj.openConnection();
 
-            // optional default is GET
             con.setRequestMethod("GET");
             con.setRequestProperty("Accept", "application/xml");
+            con.setRequestProperty("User-Agent", "com.github.kgilmer:XenoBrainz:0.4");
 
             return con.getInputStream();
         }

@@ -8,7 +8,7 @@ public class MBTextRepresentation {
     private final String language;
     private final String script;
 
-    public MBTextRepresentation(String language, String script) {
+    public MBTextRepresentation(final String language, final String script) {
         this.language = language;
         this.script = script;
     }
@@ -28,8 +28,8 @@ public class MBTextRepresentation {
 
     public static @Nullable MBTextRepresentation fromElement(@Nullable final Element e) {
         try {
-            String language = e.getChild("language", e.getNamespace()).getValue();
-            String script = e.getChild("script", e.getNamespace()).getValue();
+            final String language = e.getChild("language", e.getNamespace()).getValue();
+            final String script = e.getChild("script", e.getNamespace()).getValue();
 
             if (language != null && script != null) {
                 return new MBTextRepresentation(language, script);
